@@ -2,8 +2,11 @@ import api from "../services/api";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, View, Image, Text, TouchableOpacity } from "react-native";
 
-export function CharactersListScreen() {
+export function CharactersListScreen({ navigation }) {
+    
     const [characters, setCharacters] = useState([]);
+    // Estado para guardar o ID do personagem selecionado, para a navegação da tela de detalhes
+    const [ characterId, setCharacterId ] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -41,6 +44,13 @@ export function CharactersListScreen() {
                         <Text>{item.name}</Text>
                         <Text>{item.status}</Text>
                         <Text>{item.species}</Text>
+                        onPress={() => {
+                            // Estado variavel para guardar o ID do personagem selecionado
+                            characterId = setCharacterId(item.id);
+                            // Navegar para a tela de detalhes do personagem
+                            navigation.navigate("CharacterDetail", { characterId: item.id });
+                        }
+                    }
                     </View>
                 </TouchableOpacity>
             }
