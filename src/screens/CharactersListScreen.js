@@ -12,8 +12,9 @@ export function CharactersListScreen({ navigation }) {
     // Função para buscar personagens (com ou sem filtro)
     async function fetchCharacters(name = "") {
         try {
+            // Mostra a tela de carregamento quando decta que um usuário está buscando
             setLoading(true);
-            // Se houver texto de busca, adiciona o parâmetro name
+            // Se houver texto de busca, adiciona o parâmetro name, se não retorna todos os personagens
             const endpoint = name ? `/character/?name=${name}` : "/character";
             const response = await api.get(endpoint);
             setCharacters(response.data.results);
@@ -26,13 +27,14 @@ export function CharactersListScreen({ navigation }) {
         }
     }
 
+    // Carrega todos os personagens na primeira vez, primeira renderização
     useEffect(() => {
         fetchCharacters();
     }, []);
 
-    // Busca quando o texto muda (com debounce simples)
+    // Busca quando o texto muda (com debounce simples, ou seja com um tempo de inatividade)
     useEffect(() => {
-        // Aguarda 500ms após o usuário parar de digitar
+        // Aguarda 500ms após o usuário parar de digitar para executar a função de busca de personagem
         const delaySearch = setTimeout(() => {
             fetchCharacters(searchText);
         }, 500);
@@ -44,20 +46,22 @@ export function CharactersListScreen({ navigation }) {
     return (
         <View style={styles.container}>
             {/* Barra de pesquisa */}
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Buscar personagem..."
-                value={searchText}
-                onChangeText={setSearchText}
-                autoCapitalize="none"
-                autoCorrect={false}
-            />
-             {loading ? (
+                <TextInput style={styles.searchInput}
+                    placeholder="Buscar personagem..."
+                    value={searchText}
+                    onChangeText={setSearchText}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                />
+            {loading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
                 <FlatList
                     data={characters}
                     keyExtractor={(item) => item.id.toString()}
+                    numColumns={2} // Grid com 2 colunas
+                    columnWrapperStyle={styles.row} // Espaçamento entre colunas
+                    contentContainerStyle={styles.listContent} // Estilo do conteúdo da lista
                     ListEmptyComponent={
                         <Text style={styles.emptyText}>
                             Nenhum personagem encontrado
@@ -65,25 +69,33 @@ export function CharactersListScreen({ navigation }) {
                     }
                     renderItem={({ item }) => (
                         <TouchableOpacity
+                            style={styles.card}
                             onPress={() => {
-                                navigation.navigate("CharactersDetail", { 
-                                    characterId: item.id 
+                                navigation.navigate("CharactersDetail", {
+                                    characterId: item.id
                                 });
                             }}
                         >
-                            <View style={styles.characterCard}>
+                            <View style={styles.cardContent}>
+                                {/* Barra colorida no topo */}
+                                <View style={[
+                                    styles.topBar,
+                                    { backgroundColor: getStatusColor(item.status) }
+                                ]} />
                                 <Image
                                     source={{ uri: item.image }}
                                     style={styles.characterImage}
                                 />
-                                <View style={styles.characterInfo}>
-                                    <Text style={styles.characterName}>
-                                        {item.name}
-                                    </Text>
-                                    <Text style={styles.characterDetail}>
-                                        {item.status} - {item.species}
-                                    </Text>
-                                </View>
+                                <Text style={styles.characterName} numberOfLines={1}>
+                                    {item.name}
+                                </Text>
+                                <Text style={styles.characterStatus} numberOfLines={1}>
+                                    {item.status}
+                                </Text>
+                                <Text style={styles.characterSpecies} numberOfLines={1}>
+                                    {item.species}
+                                </Text>
+
                             </View>
                         </TouchableOpacity>
                     )}
@@ -91,6 +103,18 @@ export function CharactersListScreen({ navigation }) {
             )}
         </View>
     );
+}
+
+// Função para definir cor baseada no status
+function getStatusColor(status) {
+    switch (status.toLowerCase()) {
+        case 'alive':
+            return '#4CAF50'; // Verde
+        case 'dead':
+            return '#F44336'; // Vermelho
+        default:
+            return '#9E9E9E'; // Cinza
+    }
 }
 
 const styles = StyleSheet.create({
@@ -109,31 +133,61 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: '#f9f9f9',
     },
-    characterCard: {
-        flexDirection: 'row',
-        padding: 10,
-        margin: 10,
-        backgroundColor: '#f5f5f5',
-        borderRadius: 8,
+    listContent: {
+        paddingHorizontal: 5,
+    },
+    row: {
+        justifyContent: 'space-between',
+        paddingHorizontal: 5,
+    },
+    card: {
+        flex: 1,
+        margin: 5,
+        maxWidth: '48%',
+    },
+    cardContent: {
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        padding: 15,
         alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    topBar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 4,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
     },
     characterImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
-    },
-    characterInfo: {
-        marginLeft: 15,
-        flex: 1,
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginTop: 10,
+        marginBottom: 10,
     },
     characterName: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
+        color: '#333',
+        textAlign: 'center',
         marginBottom: 5,
     },
-    characterDetail: {
-        fontSize: 14,
+    characterStatus: {
+        fontSize: 13,
         color: '#666',
+        marginBottom: 2,
+    },
+    characterSpecies: {
+        fontSize: 12,
+        color: '#999',
+        marginBottom: 10,
     },
     emptyText: {
         textAlign: 'center',
