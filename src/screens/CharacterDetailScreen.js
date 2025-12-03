@@ -4,7 +4,7 @@ import { ActivityIndicator, Text, Image, View } from "react-native";
 
 export function CharacterDetailScreen({ navigation, route }) {
 
-     // Varável para guardar o estado mutável dos personagens que será visto os detalhes
+     // Variável para guardar o estado mutável dos personagens que será visto os detalhes
     const { characterId } = route.params;
     const [characterDetail, setCharacterDetail] = useState(null);
     const [loading, setLoading] = useState(true);
