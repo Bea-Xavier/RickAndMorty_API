@@ -1,19 +1,18 @@
 import { View, StyleSheet } from "react-native";
-import { CharactersListScreen } from "./src/screens/CharactersListScreen";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { CharactersListScreen } from "./src/screens/CharactersListScreen"
+import { CharacterDetailScreen } from "./src/screens/CharacterDetailScreen";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <CharactersListScreen />
-    </View>
+  <NavigationContainer>
+    <Stack.Navigator initialRouteName="CharactersList">
+      <Stack.Screen name="CharactersList" component={CharactersListScreen} options={{headerShow: false}}/>
+      <Stack.Screen name="CharactersDetail" component={CharacterDetailScreen} options={{headerShow: false}}/>
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
