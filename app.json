@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Rick_and_Morty_API",
+    "name": "Rick and Morty",
     "slug": "Rick_and_Morty_API",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.jpg",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -23,7 +23,7 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logoWeb.png"
     }
   }
 }

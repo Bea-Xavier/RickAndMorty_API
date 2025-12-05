@@ -93,7 +93,12 @@ export function CharactersListScreen({ navigation }) {
             />
 
             {loading ? (
-                <ActivityIndicator size="large" color="#0000ff" />
+                <ActivityIndicator
+                    marginTop={80}
+                    size="large"
+                    color="#97CE4C"
+                    style={{ marginTop: 12, transform: [{ scale: 1.2 }] }}
+                />
             ) : (
                 <>
                     <FlatList
@@ -300,7 +305,7 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         textAlign: 'center',
-        marginTop: 50,
+        marginTop: 105,
         fontSize: 16,
         color: '#999',
         width: '100%',
