@@ -82,6 +82,18 @@ export function CharactersListScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+
+        <View style={{display: 'flex', justifyContent: 'center' }}>
+            <Image
+            source={require('../images/rick.png')}
+            style={{position: 'absolute', width: 60, height: 55, marginLeft: 15, marginTop: 58}}
+            />
+            <Image
+            source={require('../images/topo.png')}
+            style={{ width: '100%', height: 70, resizeMode: 'center', marginLeft: 10}}
+            />
+        </View>
+
             {/* Barra de pesquisa */}
             <TextInput
                 style={styles.searchInput}
@@ -126,6 +138,7 @@ export function CharactersListScreen({ navigation }) {
                                         styles.topBar,
                                         { backgroundColor: getStatusColor(item.status) }
                                     ]} />
+                                    <View style={styles.characterBack } />
                                     <Image
                                         source={{ uri: item.image }}
                                         style={styles.characterImage}
@@ -222,19 +235,19 @@ export function CharactersListScreen({ navigation }) {
 function getStatusColor(status) {
     switch (status.toLowerCase()) {
         case 'alive':
-            return '#4CAF50'; // Verde
+            return '#38b241'; // Verde
         case 'dead':
-            return '#F44336'; // Vermelho
+            return '#be4136'; // Vermelho
         default:
-            return '#9E9E9E'; // Cinza
+            return '#f0e14a'; // Cinza
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        paddingTop: 50,
+        backgroundColor: '#2e2e2e',
+        paddingTop: 30,
     },
     searchInput: {
         height: 50,
@@ -244,7 +257,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         margin: 10,
         fontSize: 16,
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#ebebeb',
+        fontStyle: 'italic'
     },
     listContent: {
         paddingHorizontal: 5,
@@ -260,7 +274,7 @@ const styles = StyleSheet.create({
         maxWidth: '48%',
     },
     cardContent: {
-        backgroundColor: '#fff',
+        backgroundColor: '#51b3c5',
         borderRadius: 12,
         padding: 15,
         alignItems: 'center',
@@ -272,10 +286,11 @@ const styles = StyleSheet.create({
     },
     topBar: {
         position: 'absolute',
-        top: 0,
+        top: 0.1,
         left: 0,
         right: 0,
-        height: 4,
+        height: 7.5,
+        width: '121%' ,
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
     },
@@ -286,26 +301,39 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
     },
+    characterBack: {
+        position: 'absolute',
+        top: 20,
+        width: 110,
+        height: 110,
+        borderWidth: 2,
+        borderRadius: 55,
+        borderColor: '#fffafa'
+    },
     characterName: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#333',
+        color: '#222222',
         textAlign: 'center',
         marginBottom: 5,
     },
     characterStatus: {
         fontSize: 13,
-        color: '#666',
+        color: '#fffafa',
         marginBottom: 2,
+        fontWeight: 'semibold',
+        fontStyle: 'italic'
     },
     characterSpecies: {
         fontSize: 12,
-        color: '#999',
+        color: '#fffafa',
         marginBottom: 10,
+        fontWeight: 'semibold',
+        fontStyle: 'italic'
     },
     emptyText: {
         textAlign: 'center',
-        marginTop: 105,
+        marginTop: 50,
         fontSize: 16,
         color: '#999',
         width: '100%',
@@ -317,12 +345,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 12,
         paddingHorizontal: 5,
-        backgroundColor: '#f9f9f9',
-        borderTopWidth: 1,
-        borderTopColor: '#ddd',
+        backgroundColor: '#2e2e2e',
+        borderTopWidth: 2,
+        borderTopColor: '#272727',
     },
     pageButton: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#9bcb5f',
         paddingHorizontal: 12,
         paddingVertical: 7,
         borderRadius: 6,
@@ -356,8 +384,8 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
     },
     pageNumberActive: {
-        backgroundColor: '#2196F3',
-        borderColor: '#2196F3',
+        backgroundColor: '#9bcb5f',
+        borderColor: '#88bf35',
     },
     pageNumberText: {
         color: '#333',
@@ -371,7 +399,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingVertical: 10,
         fontSize: 15,
-        color: '#666',
-        backgroundColor: '#f9f9f9',
+        color: '#818181',
+        backgroundColor: '#2e2e2e',
     },
 });

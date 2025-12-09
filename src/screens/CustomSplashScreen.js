@@ -55,17 +55,12 @@ export function CustomSplashScreen({ onFinish }) {
     outputRange: ['0deg', '360deg']
   });
 
-  // Use scaleX for the loading progress (compatible with native driver)
-  const progressScale = scaleAnim.interpolate({
-    inputRange: [0.3, 1],
-    outputRange: [0, 1]
-  });
-
   return (
     <View style={styles.container}>
-      {/* Background gradient simulado */}
-      <View style={styles.gradientTop} />
-      <View style={styles.gradientBottom} />
+      <Image
+        source={require('../images/carregamento.png')}
+        style={styles.backgroundImage}
+      />
 
       {/* Logo com animação */}
       <Animated.View
@@ -95,17 +90,7 @@ export function CustomSplashScreen({ onFinish }) {
 
       {/* Loading indicator */}
       <Animated.View style={[styles.loadingContainer, { opacity: fadeAnim }]}>
-        <View style={styles.loadingBar}>
-          <Animated.View
-            style={[
-              styles.loadingProgress,
-              {
-                transform: [{ scaleX: progressScale }],
-                alignSelf: 'flex-start'
-              }
-            ]}
-          />
-        </View>
+        <View style={styles.loadingBar}/>
         <Text style={styles.loadingText}>Carregando...</Text>
       </Animated.View>
     </View>
@@ -118,6 +103,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#1e1e1e',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backgroundImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   gradientTop: {
     position: 'absolute',
@@ -165,9 +156,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    color: '#00B5CC',
+    color: '#51b3c5',
     textAlign: 'center',
-    marginBottom: 50,
+    marginBottom: 40,
+    fontStyle: 'italic',
   },
   loadingContainer: {
     width: width * 0.6,
@@ -180,11 +172,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     overflow: 'hidden',
     marginBottom: 10,
-  },
-  loadingProgress: {
-    height: '100%',
-    backgroundColor: '#97CE4C',
-    borderRadius: 2,
   },
   loadingText: {
     color: '#fff',
